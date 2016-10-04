@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="时间复杂度,在线处理" />
 
 
 
@@ -84,12 +84,16 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="算法的应用实例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构1--算法的应用实例">
+<meta property="og:url" content="http://yoursite.com/2016/10/04/dataStructure1/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="算法的应用实例">
+<meta property="og:updated_time" content="2016-10-04T02:30:56.664Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="数据结构1--算法的应用实例">
+<meta name="twitter:description" content="算法的应用实例">
 
 
 
@@ -110,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/04/dataStructure1/"/>
 
-  <title> Hexo </title>
+  <title> 数据结构1--算法的应用实例 | Hexo </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -133,9 +137,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -212,9 +214,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -234,10 +236,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/10/04/dataStructure1/" itemprop="url">
-                  数据结构1--算法的应用实例
-                </a>
+                数据结构1--算法的应用实例
               
             
           </h1>
@@ -277,42 +276,53 @@
       
 
       
-        
-          算法的应用实例
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/04/dataStructure1/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>给定N个整数的序列{$A_1, A_2,…,A<em>N$}，求函数$f(i,j)=max{0, \sum^{j}</em>{k=i}A_k}$的最大值。</p>
+<h4 id="算法1"><a href="#算法1" class="headerlink" title="算法1"></a>算法1</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum1</span><span class="params">( <span class="keyword">int</span> A[], <span class="keyword">int</span> N )</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> ThisSum, MaxSum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i, j, k;</div><div class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; i++)&#123; <span class="comment">/*i是子列左端位置*/</span></div><div class="line">        <span class="keyword">for</span>(j = i; j &lt; N; j++)&#123; <span class="comment">/*j是子列右端位置*/</span> </div><div class="line">            ThisSum = <span class="number">0</span>; <span class="comment">/*ThisSum是从A[i]到A[j]的子列和*/</span></div><div class="line">            <span class="keyword">for</span>(k = i; k &lt;= j; k++)</div><div class="line">                ThisSum += A[k];</div><div class="line">            <span class="keyword">if</span>(ThisSum &gt; MaxSum) <span class="comment">/*如果刚得到的这个子列和更大则更新结果*/</span></div><div class="line">               	MaxSum = ThisSum;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> MaxSum;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  可以看出这个算法要做三重循环，所以时间复杂度为$T(N)=O(N^3)$。</p>
+<h4 id="算法2"><a href="#算法2" class="headerlink" title="算法2"></a>算法2</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum2</span><span class="params">( <span class="keyword">int</span> A[], <span class="keyword">int</span> N )</span></span></div><div class="line">&#123; </div><div class="line">    <span class="keyword">int</span> ThisSum, MaxSum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i, j;</div><div class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; N; i++ ) &#123; <span class="comment">/* i是子列左端位置*/</span></div><div class="line">        ThisSum = <span class="number">0</span>; <span class="comment">/* ThisSum是从A[i]到A[j]的子列和*/</span></div><div class="line">        <span class="keyword">for</span>( j = i; j &lt; N; j++ ) &#123; <span class="comment">/* j是子列右端位置*/</span></div><div class="line">            ThisSum += A[j]; <span class="comment">/*对于相同的i，不同的j，只要在j-1次循环的基础上累加1项即可*/</span></div><div class="line">        <span class="keyword">if</span>( ThisSum &gt; MaxSum ) <span class="comment">/* 如果刚得到的这个子列和更大*/</span></div><div class="line">           	MaxSum = ThisSum; <span class="comment">/* 则更新结果*/</span></div><div class="line">        &#125; <span class="comment">/* j循环结束*/</span></div><div class="line">    &#125; <span class="comment">/* i循环结束*/</span></div><div class="line">    <span class="keyword">return</span> MaxSum;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个算法相对于算法1的减少了一层循环，所以其时间复杂度为$T(N)=O(N^2)$。</p>
+
       
     </div>
 
     <div>
       
+        
+
+      
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构/" rel="tag">#数据结构</a>
+          
+            <a href="/tags/实例/" rel="tag">#实例</a>
+          
+        </div>
       
 
       
+
       
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -320,6 +330,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -339,8 +353,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -383,6 +406,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法1"><span class="nav-number">1.1.</span> <span class="nav-text">算法1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法2"><span class="nav-number">1.2.</span> <span class="nav-text">算法2</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -479,6 +513,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
