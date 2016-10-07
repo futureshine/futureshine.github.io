@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/10/04/dataStructure1/index.html">
 <meta property="og:site_name" content="郭磊的技术博客">
 <meta property="og:description" content="算法的应用实例">
-<meta property="og:updated_time" content="2016-10-04T04:38:59.223Z">
+<meta property="og:updated_time" content="2016-10-06T15:33:51.476Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构1--算法的应用实例">
 <meta name="twitter:description" content="算法的应用实例">
@@ -35,7 +35,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img src="http://oei5dpzgk.bkt.clouddn.com/author.jpg" class="js-avatar">
+			<img src="/assets/blogImg/author.jpg" class="js-avatar">
 			
 		</a>
 
@@ -99,7 +99,7 @@
 		<header id="header" class="inner">
 			<div class="profilepic">
 				
-					<img src="http://oei5dpzgk.bkt.clouddn.com/author.jpg" class="js-avatar">
+					<img src="/assets/blogImg/author.jpg" class="js-avatar">
 				
 			</div>
 			<hgroup>
@@ -150,6 +150,7 @@
 </blockquote>
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>给定N个整数的序列 $ \lbrace A_1, A_2,…,A_N \rbrace $ ，</p>
 <p>求函数 $$ f(i,j)=max \lbrace 0, \sum^{j}_{k=i}A_k \rbrace $$ 的最大值。</p>
+<a id="more"></a>
 <h4 id="算法1"><a href="#算法1" class="headerlink" title="算法1"></a>算法1</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum1</span><span class="params">( <span class="keyword">int</span> A[], <span class="keyword">int</span> N )</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> ThisSum, MaxSum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i, j, k;</div><div class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; i++)&#123; <span class="comment">/*i是子列左端位置*/</span></div><div class="line">        <span class="keyword">for</span>(j = i; j &lt; N; j++)&#123; <span class="comment">/*j是子列右端位置*/</span> </div><div class="line">            ThisSum = <span class="number">0</span>; <span class="comment">/*ThisSum是从A[i]到A[j]的子列和*/</span></div><div class="line">            <span class="keyword">for</span>(k = i; k &lt;= j; k++)</div><div class="line">                ThisSum += A[k];</div><div class="line">            <span class="keyword">if</span>(ThisSum &gt; MaxSum) <span class="comment">/*如果刚得到的这个子列和更大则更新结果*/</span></div><div class="line">               	MaxSum = ThisSum;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> MaxSum;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>  可以看出这个算法要做三重循环，所以时间复杂度为$T(N)=O(N^3)$。</p>
 <h4 id="算法2"><a href="#算法2" class="headerlink" title="算法2"></a>算法2</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum2</span><span class="params">( <span class="keyword">int</span> A[], <span class="keyword">int</span> N )</span></span></div><div class="line">&#123; </div><div class="line">    <span class="keyword">int</span> ThisSum, MaxSum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i, j;</div><div class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; N; i++ ) &#123; <span class="comment">/* i是子列左端位置*/</span></div><div class="line">        ThisSum = <span class="number">0</span>; <span class="comment">/* ThisSum是从A[i]到A[j]的子列和*/</span></div><div class="line">        <span class="keyword">for</span>( j = i; j &lt; N; j++ ) &#123; <span class="comment">/* j是子列右端位置*/</span></div><div class="line">            ThisSum += A[j]; <span class="comment">/*对于相同的i，不同的j，只要在j-1次循环的基础上累加1项即可*/</span></div><div class="line">        <span class="keyword">if</span>( ThisSum &gt; MaxSum ) <span class="comment">/* 如果刚得到的这个子列和更大*/</span></div><div class="line">           	MaxSum = ThisSum; <span class="comment">/* 则更新结果*/</span></div><div class="line">        &#125; <span class="comment">/* j循环结束*/</span></div><div class="line">    &#125; <span class="comment">/* i循环结束*/</span></div><div class="line">    <span class="keyword">return</span> MaxSum;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -181,11 +182,15 @@
   
 <nav id="article-nav">
   
-  
-    <a href="/2016/10/04/dataStructure2-1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">数据结构2.1--线性表及其实现</div>
-      <i class="icon-circle-right"></i>
+    <a href="/2016/10/04/dataStructure2-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          数据结构2.1--线性表及其实现
+        
+      </div>
     </a>
+  
   
 </nav>
 
@@ -211,6 +216,18 @@
 </div>
 
 
+
+
+<div class="share_addthis share_jia">
+  <div class="sharing addthis_toolbox share">
+  	<span class="jiathis_txt">Share to: &nbsp; </span>
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
 
 
 
