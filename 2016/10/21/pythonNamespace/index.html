@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/10/21/pythonNamespace/index.html">
 <meta property="og:site_name" content="郭磊的技术博客">
 <meta property="og:description" content="python中命名空间的学习">
-<meta property="og:updated_time" content="2016-10-21T04:29:30.892Z">
+<meta property="og:updated_time" content="2016-10-24T04:56:41.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python中命名空间">
 <meta name="twitter:description" content="python中命名空间的学习">
@@ -153,6 +153,26 @@
 <p>输出结果为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x032BDB70</span>&gt;, <span class="string">'__builtins__'</span>: &lt;module <span class="string">'__builtin__'</span> (built-<span class="keyword">in</span>)&gt;, <span class="string">'__file__'</span>: <span class="string">'F:/Projects/python/1017test/namespaceTest.py'</span>, <span class="string">'__package__'</span>: <span class="keyword">None</span>, <span class="string">'__name__'</span>: <span class="string">'__main__'</span>, <span class="string">'__doc__'</span>: <span class="keyword">None</span>&#125;</div><div class="line">before func1: &#123;<span class="string">'x'</span>: <span class="number">1</span>&#125;</div><div class="line">before func2: &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">1</span>&#125;</div><div class="line">after func2: &#123;<span class="string">'a'</span>: <span class="number">2</span>, <span class="string">'x'</span>: <span class="number">1</span>&#125;</div><div class="line">after func1: &#123;<span class="string">'x'</span>: <span class="number">1</span>, <span class="string">'func2'</span>: &lt;function func2 at <span class="number">0x032BDAF0</span>&gt;&#125;</div><div class="line">&#123;<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x032BDB70</span>&gt;, <span class="string">'__builtins__'</span>: &lt;module <span class="string">'__builtin__'</span> (built-<span class="keyword">in</span>)&gt;, <span class="string">'__file__'</span>: <span class="string">'F:/Projects/python/1017test/namespaceTest.py'</span>, <span class="string">'__package__'</span>: <span class="keyword">None</span>, <span class="string">'__name__'</span>: <span class="string">'__main__'</span>, <span class="string">'__doc__'</span>: <span class="keyword">None</span>&#125;</div></pre></td></tr></table></figure>
 <p>可见结果可以正常输出。<code>func1</code> 在执行之前的本地变量只有 <code>x</code> 。而 <code>func2</code> 在执行之前的本地变量为 <code>a x</code> 。 </p>
+<h4 id="名字空间-Namespace"><a href="#名字空间-Namespace" class="headerlink" title="名字空间(Namespace)"></a>名字空间(Namespace)</h4><p>对于一些语言如c,c++,java来说，变量名是内存地址别名，而在python中，变量名就是一个字符串，他与所指向的对象关联成名字空间里面的一个键值对<code>{name: object}</code>，所以python的名字空间就是一个字典。</p>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>python里面有很多名字空间，每个地方都有自己的名字空间，相互不能干扰。一般有四种命名空间：</p>
+<ol>
+<li>locals：函数内部的名字空间，一般包括函数的局部变量以及形参</li>
+<li>enclosing function：在嵌套函数中外部函数的名字空间，对于上面的<code>func2</code>来说<code>func1</code>就是嵌套函数</li>
+<li>globals： 当前的模块空间，模块就是一些py文件。globals类似全局变量</li>
+<li><strong>builtins</strong>：内置模块空间，也就是内置变量或者内置函数的名字空间</li>
+</ol>
+<p>当程序引用某个变量的名字时，就会从当前名字空间开始搜索。顺序便是LEGB</p>
+<p>考虑上面的例子，访问到<code>func1</code>的<code>x=1</code>的时候，赋值语句会先把变量放到对应的名字空间中，此处是<code>func1</code>的locals，所以locals中会有x，然后让x指向一个数值为1的整数对象。执行到<code>func2</code>的<code>a=1</code>时，同样把<code>a</code>加入到<code>func2</code>的locals中，然后指向一个整数对象。下面的<code>a += x</code>看到了赋值语句，把a放在locals中，发现已经有了，所以就不需要放了。然后需要x的值就按照LEGB去找，locals里面没有，就去 enclosing function 里面找，找到了，把值拿到，然后完成运算。然后后续操作是把x放到<code>func2</code>的locals()里面</p>
+<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><p>每个名字空间都有自己的生命周期，如下：</p>
+<ol>
+<li><p><strong>builtins</strong>：在python解释器启动的时候，直到退出</p>
+</li>
+<li><p>globals：在模块定义被读入的时候创建，通常也一直保存到解释器退出</p>
+</li>
+<li><p>locals：在函数被调用时创建，直到函数返回，或者抛出异常之后，销毁。递归函数每一次递归均有自己的名字空间</p>
+</li>
+</ol>
+<p>值得指出的是，名字空间都是在代码编译时期确定的，而不是执行期间。这又解释了为什么在例1中，<code>before func2</code>的locals()里面包含了x：1这一项</p>
 
       
     </div>
@@ -178,8 +198,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2016/10/04/dataStructure2-1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">数据结构2.1--线性表及其实现</div>
+    <a href="/2016/10/04/dataStructure1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">数据结构1--算法的应用实例</div>
       <i class="icon-circle-right"></i>
     </a>
   
