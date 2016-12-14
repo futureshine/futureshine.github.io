@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>数据结构1--算法的应用实例 | 郭磊的技术博客</title>
+  <title>值传递还是引用传递 | 郭磊的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="算法的应用实例">
+  <meta name="description" content="用来区分几种常用语言的参数传递机制">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据结构1--算法的应用实例">
-<meta property="og:url" content="http://yoursite.com/2016/10/04/dataStructure1/index.html">
+<meta property="og:title" content="值传递还是引用传递">
+<meta property="og:url" content="http://yoursite.com/2016/12/14/valueOrReference/index.html">
 <meta property="og:site_name" content="郭磊的技术博客">
-<meta property="og:description" content="算法的应用实例">
-<meta property="og:updated_time" content="2016-10-06T15:33:51.476Z">
+<meta property="og:description" content="用来区分几种常用语言的参数传递机制">
+<meta property="og:updated_time" content="2016-12-14T02:50:37.613Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据结构1--算法的应用实例">
-<meta name="twitter:description" content="算法的应用实例">
+<meta name="twitter:title" content="值传递还是引用传递">
+<meta name="twitter:description" content="用来区分几种常用语言的参数传递机制">
   
     <link rel="alternative" href="/atom.xml" title="郭磊的技术博客" type="application/atom+xml">
   
@@ -127,7 +127,7 @@
 </nav>
 
       <div class="body-wrap">
-        <article id="post-dataStructure1" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-valueOrReference" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -137,7 +137,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      数据结构1--算法的应用实例
+      值传递还是引用传递
     </h1>
   
 
@@ -146,30 +146,26 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>最近在学习<a href="http://www.icourse163.org/learn/ZJU-93001?tid=1001757011#/learn/announce" target="_blank" rel="external">数据结构–陈越、何钦铭</a>。里面有很多经典的算法，所以记录下来，方便之后的复习。</p>
+<p>值传递还是引用传递，这个问题一度让我很困惑，常用的语言有 C/C++ 和 python ，但是他们的参数传递机制是很不一样的。这篇博文就简单说一下我自己的了解。</p>
 </blockquote>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>给定N个整数的序列 $ \lbrace A_1, A_2,…,A_N \rbrace $ ，</p>
-<p>求函数 $$ f(i,j)=max \lbrace 0, \sum^{j}_{k=i}A_k \rbrace $$ 的最大值。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>先来比较一段代码</p>
+<p>python</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">a = <span class="number">1</span></div><div class="line"><span class="keyword">print</span> id(a)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(b)</span>:</span></div><div class="line">    <span class="keyword">print</span> id(b)</div><div class="line">func(a)</div></pre></td></tr></table></figure>
+<p>C/C++</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">printAddress</span><span class="params">(<span class="keyword">int</span> b)</span></span>&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"The address is "</span> &lt;&lt; &amp;b &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"The address is "</span> &lt;&lt; &amp;a &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    printAddress(a);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<h4 id="算法1"><a href="#算法1" class="headerlink" title="算法1"></a>算法1</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum1</span><span class="params">( <span class="keyword">int</span> A[], <span class="keyword">int</span> N )</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> ThisSum, MaxSum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i, j, k;</div><div class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; i++)&#123; <span class="comment">/*i是子列左端位置*/</span></div><div class="line">        <span class="keyword">for</span>(j = i; j &lt; N; j++)&#123; <span class="comment">/*j是子列右端位置*/</span> </div><div class="line">            ThisSum = <span class="number">0</span>; <span class="comment">/*ThisSum是从A[i]到A[j]的子列和*/</span></div><div class="line">            <span class="keyword">for</span>(k = i; k &lt;= j; k++)</div><div class="line">                ThisSum += A[k];</div><div class="line">            <span class="keyword">if</span>(ThisSum &gt; MaxSum) <span class="comment">/*如果刚得到的这个子列和更大则更新结果*/</span></div><div class="line">               	MaxSum = ThisSum;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> MaxSum;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>  可以看出这个算法要做三重循环，所以时间复杂度为$T(N)=O(N^3)$。</p>
-<h4 id="算法2"><a href="#算法2" class="headerlink" title="算法2"></a>算法2</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum2</span><span class="params">( <span class="keyword">int</span> A[], <span class="keyword">int</span> N )</span></span></div><div class="line">&#123; </div><div class="line">    <span class="keyword">int</span> ThisSum, MaxSum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i, j;</div><div class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; N; i++ ) &#123; <span class="comment">/* i是子列左端位置*/</span></div><div class="line">        ThisSum = <span class="number">0</span>; <span class="comment">/* ThisSum是从A[i]到A[j]的子列和*/</span></div><div class="line">        <span class="keyword">for</span>( j = i; j &lt; N; j++ ) &#123; <span class="comment">/* j是子列右端位置*/</span></div><div class="line">            ThisSum += A[j]; <span class="comment">/*对于相同的i，不同的j，只要在j-1次循环的基础上累加1项即可*/</span></div><div class="line">        <span class="keyword">if</span>( ThisSum &gt; MaxSum ) <span class="comment">/* 如果刚得到的这个子列和更大*/</span></div><div class="line">           	MaxSum = ThisSum; <span class="comment">/* 则更新结果*/</span></div><div class="line">        &#125; <span class="comment">/* j循环结束*/</span></div><div class="line">    &#125; <span class="comment">/* i循环结束*/</span></div><div class="line">    <span class="keyword">return</span> MaxSum;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这个算法相对于算法1的减少了一层循环，所以其时间复杂度为$T(N)=O(N^2)$。</p>
-<h4 id="算法3"><a href="#算法3" class="headerlink" title="算法3"></a>算法3</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum3</span><span class="params">( <span class="keyword">int</span> A[], <span class="keyword">int</span> N )</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> ThisSum, MaxSum;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    ThisSum = MaxSum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; i++)&#123;</div><div class="line">        ThisSum += A[i]; <span class="comment">/*向右累加*/</span></div><div class="line">        <span class="keyword">if</span>(ThisSum &gt; MaxSum)</div><div class="line">            MaxSum = ThisSum; <span class="comment">/*发现更大和则更新当前结果*/</span></div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (ThisSum &lt; <span class="number">0</span>) </div><div class="line">            ThisSum = <span class="number">0</span>; <span class="comment">/*如果当前子列和为负，则不可能使后面的部分和增大，抛弃之。*/</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> MaxSum;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>明显可以看出这个算法相对于算法2又少了一层循环，其时间复杂度为$T(N)=O(N)$。</p>
-<p>此算法也被称为在线处理，“在线”的意思是指每输入一个数据就进行即时处理，在任何一个地方终止输入，算法都能正确给出当前的解。</p>
 
       
     </div>
     <div class="article-info article-info-index">
       
-      <a href="/2016/10/04/dataStructure1/" class="archive-article-date">
-  	<time datetime="2016-10-03T16:00:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-04</time>
+      <a href="/2016/12/14/valueOrReference/" class="archive-article-date">
+  	<time datetime="2016-12-13T16:00:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-12-14</time>
 </a>
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/实例/">实例</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/值传递/">值传递</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/引用传递/">引用传递</a></li></ul>
 	</div>
 
       
@@ -182,18 +178,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2016/10/21/pythonNamespace/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          python中命名空间
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/10/04/dataStructure2-1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">数据结构2.1--线性表及其实现</div>
+    <a href="/2016/10/21/pythonNamespace/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python中命名空间</div>
       <i class="icon-circle-right"></i>
     </a>
   
